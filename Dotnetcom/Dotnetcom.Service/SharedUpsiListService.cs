@@ -1,42 +1,51 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Dotnetcom.DataAccess;
-using Dotnetcom.DTO;
-
-namespace Dotnetcom.Service
+﻿namespace Dotnetcom.Service
 {
+    using Dotnetcom.DataAccess;
+    using Dotnetcom.DTO;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class SharedUpsiListService : ISharedUpsiListService
     {
-        private readonly SharedUpsiListRepository _repository;
+        private readonly SharedUpsiListRepository _sharedUpsiListRepo;
 
-        public SharedUpsiListService(SharedUpsiListRepository repository)
+        public SharedUpsiListService(SharedUpsiListRepository sharedUpsiListRepo)
         {
-            _repository = repository;
-        }
-
-        public async Task<SharedUpsiListModel> GetByIdAsync(int id)
-        {
-            return await _repository.GetByIdAsync(id);
+            _sharedUpsiListRepo = sharedUpsiListRepo;
         }
 
         public async Task<IEnumerable<SharedUpsiListModel>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            return await _sharedUpsiListRepo.GetAllAsync();
         }
 
-        public async Task<SharedUpsiListModel> AddAsync(SharedUpsiListModel model)
+        public async Task<SharedUpsiListModel> GetByIdAsync(int id)
         {
-            return await _repository.AddAsync(model);
+            return await _sharedUpsiListRepo.GetByIdAsync(id);
         }
 
-        public async Task<SharedUpsiListModel> UpdateAsync(SharedUpsiListModel model)
+        public async Task<int> CreateAsync(SharedUpsiListModel model)
         {
-            return await _repository.UpdateAsync(model);
+            return await _sharedUpsiListRepo.CreateAsync(model);
+        }
+
+        public async Task UpdateAsync(SharedUpsiListModel model)
+        {
+            await _sharedUpsiListRepo.UpdateAsync(model);
         }
 
         public async Task DeleteAsync(int id)
         {
-            await _repository.DeleteAsync(id);
+            await _sharedUpsiListRepo.DeleteAsync(id);
         }
+    }
+
+    public interface ISharedUpsiListService
+    {
+        Task<IEnumerable<SharedUpsiListModel>> GetAllAsync();
+        Task<SharedUpsiListModel> GetByIdAsync(int id);
+        Task<int> CreateAsync(SharedUpsiListModel model);
+        Task UpdateAsync(SharedUpsiListModel model);
+        Task DeleteAsync(int id);
     }
 }
